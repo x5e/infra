@@ -1,6 +1,6 @@
 
 resource "aws_ecs_cluster" "main" {
-  name = "${var.env_name}-main"
+  name = "${var.env_name}"
 }
 
 resource "aws_key_pair" "pair" {
@@ -49,12 +49,13 @@ yum install -y nmap-ncat
 export IP=`curl -s http://api.ipify.org/`
 nohup bash -c 'while printf "HTTP/1.0 200 OK\r\n\r\n$IP $I" | nc -l 9090; do I=$((I+1)); done'  &> /dev/null &
 nohup ncat -l 3309 --keep-open --exec "/bin/cat" &> /dev/null &
+echo "domain ${var.env_domain}" >> /etc/resolv.conf
 HERE
 }
 
 
 resource "aws_autoscaling_group" "asg" {
-  name                 = "${var.env_name}-main"
+  name                 = "${var.env_name}"
   launch_configuration = "${aws_launch_configuration.lc.name}"
   min_size = 0
   max_size = 3

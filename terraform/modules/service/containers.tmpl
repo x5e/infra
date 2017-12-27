@@ -1,0 +1,32 @@
+   [
+    {
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${LOGS}",
+          "awslogs-region": "${REGION}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "portMappings": [
+        {
+          "hostPort": ${PORT},
+          "protocol": "tcp",
+          "containerPort": ${PORT}
+        }
+      ],
+      "command": ["/opt/latency/python/latency.py"],
+      "cpu": ${CPU},
+      "environment": [
+        {"name": "PGDATABASE","value": "${NAME}"},
+        {"name": "PGHOST","value": "db"},
+        {"name": "PGPASSWORD","value": "${NAME}"},
+        {"name": "PGUSER","value": "${NAME}"}
+      ],
+      "memory": ${MEMORY},
+      "memoryReservation": ${MEMORY},
+      "image": "${ACCT}.dkr.ecr.${REGION}.amazonaws.com/${NAME}:master",
+      "essential": true,
+      "name": "${NAME}"
+    }
+  ]

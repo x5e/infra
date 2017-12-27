@@ -1,6 +1,6 @@
 
 resource "aws_lb" "main" {
-  name = "${var.env_name}-main"
+  name = "${var.env_name}"
   internal = false
   security_groups = ["${aws_default_security_group.default.id}"]
   load_balancer_type = "application"
@@ -13,7 +13,7 @@ resource "aws_lb" "main" {
 
 
 resource "aws_lb_target_group" "default" {
-  name     = "${var.env_name}-default"
+  name     = "${var.env_name}"
   port     = 9090
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.main.id}"
