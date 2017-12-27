@@ -15,7 +15,6 @@ provider "aws" {
   allowed_account_ids = ["082367326120"]
 }
 
-
 module "main" {
   source = "../../modules/main"
   env_name = "qa"
@@ -25,4 +24,3 @@ module "main" {
   cert_arn = "arn:aws:acm:us-east-1:082367326120:certificate/4af129a1-9ca3-4c1b-8928-0e4a4896b1b2"
 }
 
-output "db_password" { value = "${module.main.db_password}" }

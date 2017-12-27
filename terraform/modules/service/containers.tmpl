@@ -18,10 +18,10 @@
       "command": ["/opt/latency/python/latency.py"],
       "cpu": ${CPU},
       "environment": [
-        {"name": "PGDATABASE","value": "${NAME}"},
-        {"name": "PGHOST","value": "db"},
-        {"name": "PGPASSWORD","value": "${NAME}"},
-        {"name": "PGUSER","value": "${NAME}"}
+        {"name": "PGDATABASE","value": "${PGDATABASE}"},
+        {"name": "PGHOST","value": "${PGHOST}"},
+        {"name": "PGPASSWORD","value": "${PGPASSWORD}"},
+        {"name": "PGUSER","value": "${PGUSER}"}
       ],
       "memory": ${MEMORY},
       "memoryReservation": ${MEMORY},

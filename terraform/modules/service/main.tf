@@ -1,3 +1,10 @@
+
+provider "aws" {
+  region = "${var.region}"
+  allowed_account_ids = ["${var.account_id}"]
+}
+
+
 resource "aws_alb_target_group" "service" {
   name = "${var.service_name}-${var.env_name}"
   port = "${var.service_port}"
@@ -27,6 +34,9 @@ resource "aws_cloudwatch_log_group" "service" {
 
 data "aws_caller_identity" "whoami" {}
 
+//@TODO remove command from template file or parameterize
+//@TODO generate secondary db for service on shared instance.
+
 data "template_file" "containers" {
   template = "${file("${path.module}/containers.tmpl")}"
   vars {
@@ -37,22 +47,28 @@ data "template_file" "containers" {
     PORT = "${var.service_port}"
     REGION = "${var.region}"
     ACCT = "${data.aws_caller_identity.whoami.account_id}"
+    PGHOST = "${data.aws_ssm_parameter.pghost.value}"
+    PGPASSWORD = "${data.aws_ssm_parameter.pgpassword.value}"
+    PGDATABASE = "${data.aws_ssm_parameter.pgdatabase.value}"
+    PGUSER = "${data.aws_ssm_parameter.pguser.value}"
   }
 }
 
+
 resource "aws_ecs_task_definition" "main" {
   family                = "${var.service_name}-${var.env_name}"
-  container_definitions = ""
+  container_definitions = "${data.template_file.containers.rendered}"
   cpu = "${var.cpu}"
   memory = "${var.memory}"
   network_mode = "${var.network_mode}"
 }
 
+
 resource "aws_ecs_service" "main" {
   name = "${var.service_name}-${var.env_name}"
   task_definition = "${aws_ecs_task_definition.main.arn}"
   cluster = "${data.aws_ssm_parameter.cluster.value}"
-  desired_count = 1
+  desired_count = "${var.service_count}"
   load_balancer {
     container_name = "${var.service_name}"
     container_port = "${var.service_port}"
