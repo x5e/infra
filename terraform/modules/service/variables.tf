@@ -1,4 +1,3 @@
-variable "aws_account_id" {}
 variable "service_name" {}
 variable "env_name" {}
 
