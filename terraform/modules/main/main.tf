@@ -36,6 +36,10 @@ resource "aws_subnet" "b" {
   }
 }
 
+data external "ipify" {
+  program = ["curl", "https://api.ipify.org?format=json"]
+}
+
 
 resource "aws_default_security_group" "default" {
   vpc_id = "${aws_vpc.main.id}"
@@ -45,6 +49,7 @@ resource "aws_default_security_group" "default" {
     Environment = "${var.env_name}"
     Terraformed = 1
   }
+
   ingress {
     from_port   = 0
     to_port     = 65535
@@ -52,6 +57,16 @@ resource "aws_default_security_group" "default" {
     self        = true
     cidr_blocks = ["69.162.169.108/32"]
   }
+
+
+  ingress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["${data.external.ipify.result.ip}/32"]
+    description = "terraforming computer"
+  }
+
 
   ingress {
     protocol  = "tcp"
