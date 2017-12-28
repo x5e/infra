@@ -56,6 +56,7 @@ resource "aws_default_security_group" "default" {
     protocol    = "tcp"
     self        = true
     cidr_blocks = ["69.162.169.108/32"]
+    description = "internal communication"
   }
 
 
@@ -81,6 +82,7 @@ resource "aws_default_security_group" "default" {
     from_port = 3309
     to_port   = 3309
     cidr_blocks = ["0.0.0.0/0"]
+    description = "tcp-ping utility"
   }
 
 
@@ -89,6 +91,7 @@ resource "aws_default_security_group" "default" {
     from_port = 1234
     to_port   = 1234
     cidr_blocks = ["0.0.0.0/0"]
+    description = "allow latency test to skip load balancer"
   }
 
   ingress {
@@ -96,6 +99,7 @@ resource "aws_default_security_group" "default" {
     from_port = 443
     to_port   = 443
     cidr_blocks = ["0.0.0.0/0"]
+    description = "allow https from outside"
   }
 
 

@@ -1,6 +1,3 @@
-variable "env_region" {
-  default = "us-east-1"
-}
 
 terraform {
   backend "s3" {
@@ -10,17 +7,11 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "${var.env_region}"
-  allowed_account_ids = ["082367326120"]
-}
-
 module "main" {
-  source = "../../modules/main"
+  source = "../../../modules/shared"
+  aws_account_id = "082367326120"
   env_name = "qa"
-  env_region = "${var.env_region}"
   env_domain = "x5e.qa"
-  disposable = "true"
   cert_arn = "arn:aws:acm:us-east-1:082367326120:certificate/4af129a1-9ca3-4c1b-8928-0e4a4896b1b2"
 }
 

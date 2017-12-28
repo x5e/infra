@@ -1,7 +1,7 @@
 
 provider "aws" {
   region = "${var.region}"
-  allowed_account_ids = ["${var.account_id}"]
+  allowed_account_ids = ["${var.aws_account_id}"]
 }
 
 
@@ -47,10 +47,10 @@ data "template_file" "containers" {
     PORT = "${var.service_port}"
     REGION = "${var.region}"
     ACCT = "${data.aws_caller_identity.whoami.account_id}"
-    PGHOST = "${data.aws_ssm_parameter.pghost.value}"
-    PGPASSWORD = "${data.aws_ssm_parameter.pgpassword.value}"
-    PGDATABASE = "${data.aws_ssm_parameter.pgdatabase.value}"
-    PGUSER = "${data.aws_ssm_parameter.pguser.value}"
+    PGHOST = "${aws_ssm_parameter.pghost.value}"
+    PGPASSWORD = "${aws_ssm_parameter.pgpassword.value}"
+    PGDATABASE = "${aws_ssm_parameter.pgdatabase.value}"
+    PGUSER = "${aws_ssm_parameter.pguser.value}"
   }
 }
 

@@ -7,7 +7,7 @@ terraform {
 }
 
 module "main" {
-  source = "../../modules/main"
+  source = "../../../modules/main"
   env_name = "prod"
   env_region = "us-east-1"
   disposable = "true"
@@ -15,4 +15,3 @@ module "main" {
   cert_arn = "arn:aws:acm:us-east-1:401701269211:certificate/835a1f34-1d56-4668-9d58-86794576331b"
 }
 
-output "db_password" { value = "${module.main.db_password}" }

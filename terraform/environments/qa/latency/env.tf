@@ -7,9 +7,9 @@ terraform {
 }
 
 module "main" {
-  source = "../../modules/service"
+  source = "../../../modules/service"
   env_name = "qa"
   service_name = "latency"
   service_port = "1234"
-  account_id = "082367326120"
+  aws_account_id = "082367326120"
 }
