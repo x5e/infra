@@ -57,8 +57,6 @@ data "template_file" "containers" {
 resource "aws_ecs_task_definition" "main" {
   family                = "${var.service_name}-${var.env_name}"
   container_definitions = "${data.template_file.containers.rendered}"
-  cpu = "${var.cpu}"
-  memory = "${var.memory}"
   network_mode = "${var.network_mode}"
 }
 

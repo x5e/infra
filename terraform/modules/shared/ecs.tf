@@ -3,6 +3,15 @@ resource "aws_ecs_cluster" "main" {
   name = "${var.env_name}"
 }
 
+
+resource "aws_ssm_parameter" "cluster" {
+  name  = "/${var.env_name}/shared/CLUSTER"
+  type  = "SecureString"
+  value = "${aws_ecs_cluster.main.name}"
+  overwrite = "true"
+}
+
+
 resource "aws_key_pair" "pair" {
   key_name = "${replace(file(pathexpand("~/.ssh/id_rsa.pub")),"/(.*) (.*) (.*)\\n/", "$3")}"
   public_key = "${file(pathexpand("~/.ssh/id_rsa.pub"))}"
@@ -44,11 +53,6 @@ resource "aws_launch_configuration" "lc" {
     user_data =<<HERE
 #!/bin/bash
 echo ECS_CLUSTER=${aws_ecs_cluster.main.name} > /etc/ecs/ecs.config
-yum install -y nc
-yum install -y nmap-ncat
-export IP=`curl -s http://api.ipify.org/`
-nohup bash -c 'while printf "HTTP/1.0 200 OK\r\n\r\n$IP $I" | nc -l 9090; do I=$((I+1)); done'  &> /dev/null &
-nohup ncat -l 3309 --keep-open --exec "/bin/cat" &> /dev/null &
 echo "domain ${var.env_domain}" >> /etc/resolv.conf
 HERE
 }
@@ -70,5 +74,5 @@ resource "aws_autoscaling_group" "asg" {
     value = "1"
     propagate_at_launch = true
   }
-  vpc_zone_identifier = ["${aws_subnet.a.id}"]
+  vpc_zone_identifier = ["${module.vpc.subnet_a}"]
 }
