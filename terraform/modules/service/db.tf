@@ -26,6 +26,8 @@ resource "postgresql_role" "service" {
 resource "postgresql_database" "service" {
   name              = "${var.service_name}"
   owner             = "${postgresql_role.service.name}"
+  lc_collate        = "en_US.UTF-8"
+  lc_ctype          = "en_US.UTF-8"
   lifecycle {
     prevent_destroy = true
   }
