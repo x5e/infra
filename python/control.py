@@ -48,8 +48,6 @@ def redeploy(cluster, service):
         print(json.dumps(out, default=str), file=sys.stderr)
 
 
-
-
 if __name__ == "__main__":
     ordered_args = sys.argv[1:]
     if ordered_args and ordered_args[0] in globals():
