@@ -6,6 +6,11 @@ data "aws_ssm_parameter" "listener" {
   name = "/${var.env_name}/shared/LISTENER"
 }
 
+
+data "aws_ssm_parameter" "balancer" {
+  name = "/${var.env_name}/shared/BALANCER"
+}
+
 data "aws_ssm_parameter" "vpc_id" {
   name = "/${var.env_name}/shared/VPC_ID"
 }

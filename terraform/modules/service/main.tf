@@ -27,6 +27,15 @@ resource "aws_lb_listener_rule" "static" {
   }
 }
 
+resource "aws_lb_listener" "service" {
+  "default_action" {
+    target_group_arn = "${aws_alb_target_group.service.arn}"
+    type = "forward"
+  }
+  load_balancer_arn = "${data.aws_ssm_parameter.balancer.value}"
+  port = "${var.service_port}"
+}
+
 resource "aws_cloudwatch_log_group" "service" {
   name = "/ecs/${var.service_name}"
 }

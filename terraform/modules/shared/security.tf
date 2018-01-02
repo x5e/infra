@@ -21,24 +21,9 @@ resource "aws_default_security_group" "default" {
     to_port     = 65535
     protocol    = "tcp"
     self        = true
-    description = "within security group"
+    cidr_blocks = ["172.26.0.0/16", "69.162.169.108/32", "${data.external.ipify.result.ip}/32"]
   }
 
-  ingress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["172.26.0.0/16"]
-    description = "lightsail"
-  }
-
-  ingress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["69.162.169.108/32"]
-    description = "jabberwock"
-  }
 
   ingress {
     protocol  = "tcp"
@@ -53,22 +38,6 @@ resource "aws_default_security_group" "default" {
     to_port   = 443
     cidr_blocks = ["0.0.0.0/0"]
     description = "allow https from outside"
-  }
-
-  ingress {
-    protocol  = "tcp"
-    from_port = 3309
-    to_port   = 3309
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "tcp-ping utility"
-  }
-
-  ingress {
-    from_port   = 0
-    to_port     = 65534
-    protocol    = "tcp"
-    cidr_blocks = ["${data.external.ipify.result.ip}/32"]
-    description = "terraforming computer"
   }
 
 

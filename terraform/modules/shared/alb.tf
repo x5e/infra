@@ -1,7 +1,7 @@
 
 resource "aws_lb" "main" {
   name = "${var.env_name}"
-  internal = false
+  internal = true
   security_groups = ["${aws_default_security_group.default.id}"]
   load_balancer_type = "application"
   subnets = ["${module.vpc.subnet_a}", "${module.vpc.subnet_b}"]
@@ -10,6 +10,15 @@ resource "aws_lb" "main" {
     Terraformed = "1"
   }
 }
+
+
+resource "aws_ssm_parameter" "balancer" {
+  name = "/${var.env_name}/shared/BALANCER"
+  type = "SecureString"
+  value = "${aws_lb.main.arn}"
+  overwrite = "true"
+}
+
 
 
 resource "aws_lb_target_group" "default" {
