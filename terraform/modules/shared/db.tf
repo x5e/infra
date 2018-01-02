@@ -72,3 +72,11 @@ resource "aws_route53_record" "db" {
   records = ["${aws_db_instance.database.address}"]
 }
 
+
+resource "aws_route53_record" "internal_db" {
+  name = "db.${var.internal_domain}"
+  type = "CNAME"
+  zone_id = "${aws_route53_zone.internal.zone_id}"
+  ttl     = "60"
+  records = ["${aws_db_instance.database.address}"]
+}

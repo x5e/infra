@@ -8,3 +8,5 @@ variable "trusted" {
 }
 
 variable "disposable" {}
+
+variable "internal_domain" { default = "x5e.internal" }

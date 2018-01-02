@@ -23,4 +23,12 @@ resource "aws_route53_record" "region" {
 }
 
 
+resource "aws_route53_zone" "internal" {
+  name = "${var.internal_domain}"
+  vpc_id = "${module.vpc.vpc_id}"
+  tags {
+    Environment = "${var.env_name}"
+  }
+  comment = "${var.env_name} internal"
+}
 
