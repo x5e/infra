@@ -28,7 +28,7 @@ resource "aws_default_security_group" "default" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = "172.26.0.0/16"
+    cidr_blocks = ["172.26.0.0/16"]
     description = "lightsail"
   }
 
@@ -36,7 +36,7 @@ resource "aws_default_security_group" "default" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = "69.162.169.108/32"
+    cidr_blocks = ["69.162.169.108/32"]
     description = "jabberwock"
   }
 
@@ -65,7 +65,7 @@ resource "aws_default_security_group" "default" {
 
   ingress {
     from_port   = 0
-    to_port     = 65535
+    to_port     = 65534
     protocol    = "tcp"
     cidr_blocks = ["${data.external.ipify.result.ip}/32"]
     description = "terraforming computer"
