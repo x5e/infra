@@ -46,9 +46,6 @@ resource "aws_cloudwatch_log_group" "service" {
 
 data "aws_caller_identity" "whoami" {}
 
-//@TODO remove command from template file or parameterize
-//@TODO generate secondary db for service on shared instance.
-
 data "template_file" "containers" {
   count = "${var.has_service}"
   template = "${file("${path.module}/containers.tmpl")}"
