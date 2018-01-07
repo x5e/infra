@@ -22,8 +22,8 @@
         {"name": "PGPASSWORD","value": "${PGPASSWORD}"},
         {"name": "PGUSER","value": "${PGUSER}"}
       ],
-      "memory": ${MEMORY},
-      "memoryReservation": ${MEMORY},
+      "memory": ${HARD},
+      "memoryReservation": ${SOFT},
       "image": "${ACCT}.dkr.ecr.${REGION}.amazonaws.com/${NAME}:master",
       "essential": true,
       "name": "${NAME}"

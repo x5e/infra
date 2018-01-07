@@ -16,3 +16,4 @@ resource "aws_ssm_parameter" "bucket" {
   value = "${postgresql_role.service.name}"
   overwrite = "true"
 }
+

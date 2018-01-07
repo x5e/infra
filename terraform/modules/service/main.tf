@@ -50,7 +50,8 @@ data "template_file" "containers" {
   vars {
     LOGS = "${aws_cloudwatch_log_group.service.name}"
     CPU = "${var.cpu}"
-    MEMORY = "${var.memory}"
+    SOFT = "${var.soft}"
+    HARD = "${var.hard}"
     NAME = "${var.service_name}"
     PORT = "${var.service_port}"
     REGION = "${var.region}"
