@@ -5,6 +5,7 @@ provider "aws" {
 
 
 resource "aws_alb_target_group" "service" {
+  count = "${var.has_service}"
   name = "${var.service_name}-${var.env_name}"
   port = "${var.service_port}"
   protocol = "HTTP"
@@ -13,6 +14,7 @@ resource "aws_alb_target_group" "service" {
 
 
 resource "aws_lb_listener_rule" "static" {
+  count = "${var.has_service}"
   listener_arn = "${data.aws_ssm_parameter.listener.value}"
   priority     = 100
 
@@ -28,6 +30,7 @@ resource "aws_lb_listener_rule" "static" {
 }
 
 resource "aws_lb_listener" "service" {
+  count = "${var.has_service}"
   "default_action" {
     target_group_arn = "${aws_alb_target_group.service.arn}"
     type = "forward"
@@ -37,6 +40,7 @@ resource "aws_lb_listener" "service" {
 }
 
 resource "aws_cloudwatch_log_group" "service" {
+  count = "${var.has_service}"
   name = "/ecs/${var.service_name}"
 }
 
@@ -46,6 +50,7 @@ data "aws_caller_identity" "whoami" {}
 //@TODO generate secondary db for service on shared instance.
 
 data "template_file" "containers" {
+  count = "${var.has_service}"
   template = "${file("${path.module}/containers.tmpl")}"
   vars {
     LOGS = "${aws_cloudwatch_log_group.service.name}"
@@ -65,6 +70,7 @@ data "template_file" "containers" {
 
 
 resource "aws_ecs_task_definition" "main" {
+  count = "${var.has_service}"
   family                = "${var.service_name}-${var.env_name}"
   container_definitions = "${data.template_file.containers.rendered}"
   network_mode = "${var.network_mode}"
@@ -72,6 +78,7 @@ resource "aws_ecs_task_definition" "main" {
 
 
 resource "aws_ecs_service" "main" {
+  count = "${var.has_service}"
   name = "${var.service_name}-${var.env_name}"
   task_definition = "${aws_ecs_task_definition.main.arn}"
   cluster = "${data.aws_ssm_parameter.cluster.value}"
