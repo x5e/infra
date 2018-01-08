@@ -60,3 +60,21 @@ resource "aws_ssm_parameter" "pgdatabase" {
   value = "${postgresql_database.service.name}"
   overwrite = "true"
 }
+
+
+resource "random_id" "worker" {
+  byte_length = 16
+}
+
+
+resource "postgresql_role" "worker" {
+  count    = "${var.worker_name == "" ? 0 : 1}"
+  name     = "${var.worker_name}"
+  login    = true
+  password = "${random_id.worker.hex}"
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+

@@ -11,4 +11,5 @@ module "main" {
   env_name = "qa"
   service_name = "crayfish"
   has_service = 0
+  worker_name = "apprun"
 }
