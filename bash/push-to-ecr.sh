@@ -9,10 +9,7 @@ echo " done (${PWD})"
 test -n "${AWS_DEFAULT_REGION}" || barf AWS_DEFAULT_REGION not set
 REGION=${AWS_DEFAULT_REGION:-us-east-1}
 echo "REGION=${REGION}"
-if test "${TRAVIS_EVENT_TYPE}" = pull_request; then
-    echo "Not pushing to ECR on pull request."
-    exit 0
-fi
+test "${TRAVIS_EVENT_TYPE}" != pull_request || barf "Not pushing to ECR on pull request."
 
 echo getting AWS account number
 ACCT=`aws sts get-caller-identity | jq -r .Account`
