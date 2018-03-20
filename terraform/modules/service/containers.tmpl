@@ -24,7 +24,7 @@
       ],
       "memory": ${HARD},
       "memoryReservation": ${SOFT},
-      "image": "${ACCT}.dkr.ecr.${REGION}.amazonaws.com/${NAME}:master",
+      "image": "${ACCT}.dkr.ecr.${REGION}.amazonaws.com/${NAME}:${BRANCH}",
       "essential": true,
       "name": "${NAME}"
     }

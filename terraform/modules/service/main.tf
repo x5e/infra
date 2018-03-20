@@ -16,7 +16,7 @@ resource "aws_alb_target_group" "service" {
 resource "aws_lb_listener_rule" "static" {
   count = "${var.has_service}"
   listener_arn = "${data.aws_ssm_parameter.listener.value}"
-  priority     = 100
+  priority     = "${var.service_port}"
 
   action {
     type             = "forward"
@@ -62,6 +62,7 @@ data "template_file" "containers" {
     PGPASSWORD = "${aws_ssm_parameter.pgpassword.value}"
     PGDATABASE = "${aws_ssm_parameter.pgdatabase.value}"
     PGUSER = "${aws_ssm_parameter.pguser.value}"
+    BRANCH = "${var.branch}"
   }
 }
 

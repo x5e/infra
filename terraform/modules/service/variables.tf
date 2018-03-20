@@ -13,3 +13,4 @@ variable "service_count" { default = 1 }
 variable "need_s3_bucket" { default = 0 }
 variable "has_service" {default = 1}
 variable "worker_name" { default = "" }
+variable "branch" { default = "master" }
