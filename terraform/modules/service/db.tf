@@ -78,3 +78,13 @@ resource "postgresql_role" "worker" {
 }
 
 
+resource "postgresql_schema" "airflow" {
+  name  = "airflow"
+  owner = "airflow"
+
+  policy {
+    role = "public"
+    usage = true
+  }
+}
+
